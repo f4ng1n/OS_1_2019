@@ -1,24 +1,22 @@
 # OS2019
 ######ETU"LETI" project (OS 2019)#######
 
-***LAB SỐ 1: СОЗДАНИЕ И УНИЧТОЖЕНИЕ ПОТОКОВ
-(TẠO VÀ XÂY DỰNG LUỒNG _THREAD)***
+# LAB SỐ 1: СОЗДАНИЕ И УНИЧТОЖЕНИЕ ПОТОКОВ (TẠO VÀ XÂY DỰNG LUỒNG _THREAD)
 
 *Цель работы - знакомство с базовой структурой построения многопоточной программы и с системными вызовами, обеспечивающими создание и завершение потоков. (Mục đích của bài lab: làm quen với cấu trúc cơ bản, nguyên lý và biết cách xây dựng một chương trình đa luồng, bằng cách gọi luồng hệ thống, đảm bảo thực hiện và dừng luồng).*
-*Tổng hợp lý thuyết từ lection conspectus (конспект лекции у Широкова)*
+*Tổng hợp lý thuyết từ lection conspectus (конспект лекции у Широкова)*  
 
-**1. В чем состоит различие между понятиями «поток» и «процесс»?**
-(Sự khác biệt về định nghĩa giữa “luồng” và “tiến trình” là gì?)
+**1. В чем состоит различие между понятиями «поток» и «процесс»?**    
+(Sự khác biệt về định nghĩa giữa “luồng” và “tiến trình” là gì?)  
   Процессы и потоки связаны друг с другом, но при этом имеют существенные различия.
-Процесс — экземпляр программы во время выполнения, независимый объект, которому выделены системные ресурсы (например, процессорное время и память). Каждый процесс выполняется в отдельном адресном пространстве: один процесс не может получить доступ к переменным и структурам данных другого. Если процесс хочет получить доступ к чужим ресурсам, необходимо использовать межпроцессное взаимодействие. Это могут быть конвейеры, файлы, каналы связи между компьютерами и многое другое.
-Поток использует то же самое пространства стека, что и процесс, а множество потоков совместно используют данные своих состояний. Как правило, каждый поток может работать (читать и писать) с одной и той же областью памяти, в отличие от процессов, которые не могут просто так получить доступ к памяти другого процесса. У каждого потока есть собственные регистры и собственный стек, но другие потоки могут их использовать.
-Поток — определенный способ выполнения процесса. Когда один поток изменяет ресурс процесса, это изменение сразу же становится видно другим потокам этого процесса.
+Процесс — экземпляр программы во время выполнения, независимый объект, которому выделены системные ресурсы (например, процессорное время и память). Каждый процесс выполняется в отдельном адресном пространстве: один процесс не может получить доступ к переменным и структурам данных другого. Если процесс хочет получить доступ к чужим ресурсам, необходимо использовать межпроцессное взаимодействие. Это могут быть конвейеры, файлы, каналы связи между компьютерами и многое другое.  
+Поток использует то же самое пространства стека, что и процесс, а множество потоков совместно используют данные своих состояний. Как правило, каждый поток может работать (читать и писать) с одной и той же областью памяти, в отличие от процессов, которые не могут просто так получить доступ к памяти другого процесса. У каждого потока есть собственные регистры и собственный стек, но другие потоки могут их использовать.  
+Поток — определенный способ выполнения процесса. Когда один поток изменяет ресурс процесса, это изменение сразу же становится видно другим потокам этого процесса.  
 Process là quá trình hoạt động của một ứng dụng, một đối tượng độc lập cho tài nguyên của hệ thống (ví dụ thời gian xử lý và bộ nhớ). Mỗi một tiến trình (process) thực hiện trong một không gian địa chỉ riêng biệt: 1 process không thể truy cập vào các biến cũng như cấu trúc dữ liệu của một process khác. Nếu muốn truy cập, cần phải có sự giao tiếp giữa các process với nhau. Sự giao tiếp này có thể là pipelines, files communication channels giữa các máy tính và hơn thế nữa.
-Thread (luồng) sử dụng chung stack (ngăn xếp) của process, và multiple threads (đa luồng) chia sẻ dữ liệu trạng thái của chúng. Theo nguyên tắc, mỗi luồng có thể đọc và ghi (read and write) với cùng 1 vùng nhớ. Điều này khác biệt với process, không thể dù chỉ đơn giản là truy cập vào vùng nhớ của tiến trình khác. Mỗi luồng có một thanh ghi riêng và ngăn xếp riêng, nhưng các luồng khác có thể sử dụng chúng.
- Luồng – phương thức xác định thực hiện các tiến trình! Khi 1 luồng thay đổi tài nguyên của tiến trình, sự thay đổi này thực sự hiển thị đối với các luồng khác của tiến trình.
+Thread (luồng) sử dụng chung stack (ngăn xếp) của process, và multiple threads (đa luồng) chia sẻ dữ liệu trạng thái của chúng. Theo nguyên tắc, mỗi luồng có thể đọc và ghi (read and write) với cùng 1 vùng nhớ. Điều này khác biệt với process, không thể dù chỉ đơn giản là truy cập vào vùng nhớ của tiến trình khác. Mỗi luồng có một thanh ghi riêng và ngăn xếp riêng, nhưng các luồng khác có thể sử dụng chúng.  
+ Luồng – phương thức xác định thực hiện các tiến trình! Khi 1 luồng thay đổi tài nguyên của tiến trình, sự thay đổi này thực sự hiển thị đối với các luồng khác của tiến trình.  
  
-**2. Как осуществить передачу параметров в функцию потока при создании потока? (Làm thế nào để truyền tham số vào hàm khi tạo luồng?)**
-pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start)(void *), void *arg);
+**2. Как осуществить передачу параметров в функцию потока при создании потока? (Làm thế nào để truyền tham số vào hàm khi tạo luồng?)**  ````pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start)(void *), void *arg);````
 Аргумент arg — это бестиповый указатель, содержащий аргументы потока. Чаще всего arg указывает на глобальную или динамическую переменную, но если вызываемая функция не требует наличия аргументов, то в качестве arg можно указать NULL.
 Đối số arg: con trỏ không kiểu, chứa các đối số của thread. Thường thì arg sẽ trỏ đến một global variable (biến toàn cục) hoặc biến động (dynamic variable), nhưng nếu hàm được gọi không yêu cầu các đối số thì có thể chỉ định NULL (con trỏ NULL).
 
